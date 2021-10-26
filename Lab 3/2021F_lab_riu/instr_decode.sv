@@ -1,5 +1,5 @@
 module instr_decode (input logic [31:0] in, //input
-		     output logic [31:0] opcode, //opcode
+		     output logic [6:0] opcode, //opcode
 		     output logic [6:0] funct7, //function 7
 		     output logic [4:0] rs2, //register 2
 		     output logic [4:0] rs1, //register 1
