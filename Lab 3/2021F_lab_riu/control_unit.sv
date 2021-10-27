@@ -1,4 +1,4 @@
-module instr_decode (input logic [2:0] itype //instruction type (r, i, u)
+module instr_decode (input logic [2:0] itype, //instruction type (r, i, u)
 		     input logic [3:0] instr, //instruction
 			 output logic [0:0] alusrc,
 			 output logic [0:0] regwrite, //register file write enable
