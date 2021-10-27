@@ -34,7 +34,7 @@ module instr_decode (input logic [2:0] itype, //instruction type (r, i, u)
 			regwrite = 1'b1;
 			regsel = 2'b10;
 			gpio_we = 1'b0;
-		end else if (istr == 3'b010) begin
+		end else if (instr == 3'b010) begin
 			alusrc = 1'bx;
 			regwrite = 1'b1;
 			regsel = 2'b01;
