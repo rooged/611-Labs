@@ -1,7 +1,7 @@
 module cpu (input logic [0:0] clk,
 		input logic [3:0] rst,
-		input logic [31:0] in,
-		output logic [31:0] out);
+		input logic [31:0] gpio_in,
+		output logic [31:0] gpio_out);
 	logic [31:0] instruction_mem [4095:0];
 	wire [31:0] instruction_EX, readdata1_EX, readdata2_EX, R_EX;
 	logic [11:0] PC_FETCH;
@@ -17,40 +17,44 @@ module cpu (input logic [0:0] clk,
 	logic [31:0] A_EX, B_EX, R_WB;
 	logic [0:0] regwrite_WB;
 	logic [1:0] regsel_WB;
-	logic [31:0] writedata_WB;
+	logic [31:0] writedata_WB, gpio_in_WB, inst_WB;
 
 	initial
 		$readmemh ("hexcode.txt", instruction_mem);
 
 	always_ff @ (posedge clk)
-	if (rst) begin
-		instruction_EX <= 32'b0;
-	PC_FETCH <= 12'b0;
-	end else begin
-		instruction_EX <= instruction_mem[PC_FETCH];
-		PC_FETCH <= PC_FETCH + 12'b1;
-	end
+		if (rst) begin
+			instruction_EX <= 32'b0;
+			PC_FETCH <= 12'b0;
+		end else begin
+			instruction_EX <= instruction_mem[PC_FETCH];
+			PC_FETCH <= PC_FETCH + 12'b1;
+		end
+		
+		rd_WB <= rd_EX; //instruction_EX 11:7 -> writeaddr
 
-	always_comb begin
-		rd_WB <= rd_EX;
-
+		//alusrc_EX mux
 		if alusrc_EX
-			B_EX <= instruction_EX[31:20];
+			B_EX <= {20{instruction_EX[31]}, instruction_EX[31:20]};
 		else
 			B_EX <= readdata2_EX;
 
-		regwrite_WB <= regwrite_EX;
-		regsel_WB <= regsel_EX;
-		R_WB <= R_EX;
+		if gpio_we_EX //gpio register mux
+			gpio_out <= readdata1_EX;
 
-		if (regsel_WB == 2'b00)
-			writedata_WB <= in;
+		regwrite_WB <= regwrite_EX; //regwrite_EX -> we
+		regsel_WB <= regsel_EX; //regsel_EX -> mux
+		gpio_in_WB <= gpio_in; //gpio_in -> mux
+		inst_WB <= {instruction_EX[31:12], 12'b0} //instruction_EX[31:12], 12'b0 -> mux
+		R_WB <= R_EX; //R_EX -> R_WB
+
+		if (regsel_WB == 2'b00) //final 3 part mux
+			writedata_WB <= gpio_in_WB;
 		else if (regsel_WB == 2'b01)
-			writedata_WB <= regwrite_EX;
+			writedata_WB <= inst_WB;
 		else if (regsel_WB == 2'b10)
 			writedata_WB <= R_WB;
-			
-		//rd_WB <= instruction_EX;
+		end
 	end
 
 	alu aluM(.A(readdata1_EX), .B(B_EX), .op(opcode_EX), .R(R_EX), .zero());
@@ -58,14 +62,12 @@ module cpu (input logic [0:0] clk,
 	control_unit ctrl(.itype(itype_EX), .instr(instr_EX), .alusrc(alusrc_EX),
 		.regwrite(regwrite_EX), .regsel(regsel_EX), .aluop(aluop_EX), gpio_we(gpio_we_EX));
 
-	hexdriver hexd(.val(), .HEX());
-
 	instr_decode instd(.in(instruction_EX), .opcode(opcode_EX), .funct7(funct7_EX), .rs2(rs2_EX),
 		.rs1(rs1_EX), .funct3(funct3_EX), .rd(rd_EX), .immu(immu_EX), .immi(immi_EX),
 		.csr(csr_EX), .shamt(shamt_EX), .itype(itype_EX), .instr(instr_EX));
 
 	regfile regf(.clk(clk), .rst(rst), .we(regwrite_WB), .readaddr1(instruction_EX[19:15]),
-		.readaddr2(instruction_EX[24:20]), .writeaddr(rd_WB), .writedata(),
+		.readaddr2(instruction_EX[24:20]), .writeaddr(rd_WB), .writedata(writedata_WB),
 		.readdata1(readdata1_EX), .readdata2(readdata2_EX));
 	
 endmodule

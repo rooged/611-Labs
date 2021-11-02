@@ -30,17 +30,18 @@ module top (
 	output		     [6:0]		HEX6,
 	output		     [6:0]		HEX7
 );
-	//assigns switches to display & sends to hexdriver
-	hexdriver hex0(.val(SW[3:0]), .HEX(HEX0));
-	hexdriver hex1(.val(SW[7:4]), .HEX(HEX1));
-	hexdriver hex2(.val(SW[11:8]), .HEX(HEX2));
-	hexdriver hex3(.val(SW[15:12]), .HEX(HEX3));
-	hexdriver hex4(.val({2'b00, SW[17:16]}), .HEX(HEX4));
-	//directly assigns displays to 0 since there are no switches for them
-	assign HEX5 = 7'b1000000;
-	assign HEX6 = 7'b1000000;
-	assign HEX7 = 7'b1000000;
+	wire [31:0] gpio_out;
 
+	cpu cpuM(.clk(CLOCK_50), .rst(1'b0), .gpio_in(SW), .gpio_out(gpio_out));
+	//assigns switches to display & sends to hexdriver
+	hexdriver hex0(.val(gpio_out[3:0]), .HEX(HEX0));
+	hexdriver hex1(.val(gpio_out[7:4]), .HEX(HEX1));
+	hexdriver hex2(.val(gpio_out[11:8]), .HEX(HEX2));
+	hexdriver hex3(.val(gpio_out[15:12]), .HEX(HEX3));
+	hexdriver hex4(.val(gpio_out[19:16]), .HEX(HEX4));
+	hexdriver hex5(.val(gpio_out[23:20]), .HEX(HEX5));
+	hexdriver hex6(.val(gpio_out[27:24]), .HEX(HEX6));
+	hexdriver hex7(.val(gpio_out[31:28]), .HEX(HEX7));
 
 //=======================================================
 //  REG/WIRE declarations

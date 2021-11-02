@@ -9,7 +9,7 @@ module instr_decode (input logic [31:0] in, //input
 		     output logic [11:0] immi, //immediate for i-type
 		     output logic [11:0] csr, //csr value for csrrw
 			 output logic [4:0] shamt, //shamt value for slli, srai, srli
-		     output logic [2:0] itype //instruction type (r, i, u)
+		     output logic [2:0] itype, //instruction type (r, i, u)
 		     output logic [3:0] instr); //instruction
 	//assigns values
 	assign opcode = in[6:0];
@@ -36,6 +36,7 @@ module instr_decode (input logic [31:0] in, //input
 				3'b101: instr = funct7[5] ? 4'b1011 : 4'b1001; //sra = 4'b1011, srl = 4'b1001
 				3'b110: instr = 4'b0001; //or = 4'b0001
 				3'b111: instr = 4'b0000; //and = 4'b0000
+			endcase
 		//i-type: addi, andi, ori, xori, slli, srai, srli
 		end else if (opcode == 7'b0010011) begin
 			itype = 3'b001;
@@ -46,10 +47,11 @@ module instr_decode (input logic [31:0] in, //input
 				3'b101: instr = funct7[5] ? 4'b1100 : 4'b1001; //srai = 4'b1100, srli = 4'b1001
 				3'b110: instr = 4'b0001; //ori = 4'b0001
 				3'b111: instr = 4'b0000; //andi = 4'b0000
+			endcase
 		//u-type: lui
 		end else if (opcode == 7'b0110111) begin
 			itype = 3'b010;
-			intr = 4'b0000; //lui = 4'b0000
+			instr = 4'b0000; //lui = 4'b0000
 		end/* else if (opcode === 7'b"B-type opcode") begin
 			assign itype = 3'b011;
 		end else if (opcode === 7'b"J-type opcode") begin
