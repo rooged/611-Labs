@@ -25,10 +25,11 @@ module instr_testbench;
 	);
 	
 	initial begin
+		//R-types
 		//add $t0, $t1, $t2
 		in <= {7'b0000000, 5'b00010, 5'b00001, 3'b000, 5'b00000, 7'b0110011};
 		#10
-		if (funct7 == 0000000 && rs2 == 5'b00010 && rs1 == 5'b00001 &&
+		if (funct7 == 7'b0000000 && rs2 == 5'b00010 && rs1 == 5'b00001 &&
 			funct3 == 3'b000 && rd == 5'b00000 && opcode == 7'b0110011 &&
 			itype == 3'b000 && instr == 4'b0011) begin
 			$error("add: Test 1 Passed");
@@ -37,28 +38,191 @@ module instr_testbench;
 		//sub $t8, $t3, $t7
 		in <= {7'b0100000, 5'b00111, 5'b00011, 3'b000, 5'b01000, 7'b0110011};
 		#10
-		if (funct7 == 0100000 && rs2 == 5'b00111 && rs1 == 5'b00011 &&
+		if (funct7 == 7'b0100000 && rs2 == 5'b00111 && rs1 == 5'b00011 &&
 			funct3 == 3'b000 && rd == 5'b01000 && opcode == 7'b0110011 &&
 			itype == 3'b000 && instr == 4'b0100) begin
 			$error("sub: Test 2 Passed");
 		end
 		
-		//and $t10, $t4, $t5
-		in <= {7'b0000000, 5'b00101, 5'b00100, 3'b111, 5'b01010, 7'b0110011};
+		//and $t10, $t3, $t5
+		in <= {7'b0000000, 5'b00101, 5'b00011, 3'b111, 5'b01010, 7'b0110011};
 		#10
-		if (funct7 == 0000000 && rs2 == 5'b00101 && rs1 == 5'b00011 &&
-			funct3 == 3'b111 && rd == 5'b01000 && opcode == 7'b0110011 &&
+		if (funct7 == 7'b0000000 && rs2 == 5'b00101 && rs1 == 5'b00011 &&
+			funct3 == 3'b111 && rd == 5'b01010 && opcode == 7'b0110011 &&
 			itype == 3'b000 && instr == 4'b0000) begin
 			$error("and: Test 3 Passed");
 		end
 		
-		//or $t2, $t1, $t0
+		//or $t0, $t1, $t2
 		in <= {7'b0000000, 5'b00010, 5'b00001, 3'b110, 5'b00000, 7'b0110011};
 		#10
-		if (funct7 == 0000000 && rs2 == 5'b00101 && rs1 == 5'b00011 &&
-			funct3 == 3'b111 && rd == 5'b01000 && opcode == 7'b0110011 &&
+		if (funct7 == 7'b0000000 && rs2 == 5'b00010 && rs1 == 5'b00001 &&
+			funct3 == 3'b110 && rd == 5'b00000 && opcode == 7'b0110011 &&
 			itype == 3'b000 && instr == 4'b0001) begin
 			$error("or: Test 4 Passed");
+		end
+		
+		//xor $t0, $t1, $t2
+		in <= {7'b0000000, 5'b00010, 5'b00001, 3'b100, 5'b00000, 7'b0110011};
+		#10
+		if (funct7 == 7'b0000000 && rs2 == 5'b00010 && rs1 == 5'b00001 &&
+			funct3 == 3'b100 && rd == 5'b00000 && opcode == 7'b0110011 &&
+			itype == 3'b000 && instr == 4'b0010) begin
+			$error("xor: Test 5 Passed");
+		end
+		
+		//sll $t0, $t1, $t2
+		in <= {7'b0000000, 5'b00010, 5'b00001, 3'b001, 5'b00000, 7'b0110011};
+		#10
+		if (funct7 == 7'b0000000 && rs2 == 5'b00010 && rs1 == 5'b00001 &&
+			funct3 == 3'b001 && rd == 5'b00000 && opcode == 7'b0110011 &&
+			itype == 3'b000 && instr == 4'b1000) begin
+			$error("sll: Test 6 Passed");
+		end
+		
+		//sra $t0, $t1, $t2
+		in <= {7'b0100000, 5'b00010, 5'b00001, 3'b101, 5'b00000, 7'b0110011};
+		#10
+		if (funct7 == 7'b0100000 && rs2 == 5'b00010 && rs1 == 5'b00001 &&
+			funct3 == 3'b101 && rd == 5'b00000 && opcode == 7'b0110011 &&
+			itype == 3'b000 && instr == 4'b1011) begin
+			$error("sra: Test 7 Passed");
+		end
+		
+		//srl $t0, $t1, $t2
+		in <= {7'b0000000, 5'b00010, 5'b00001, 3'b101, 5'b00000, 7'b0110011};
+		#10
+		if (funct7 == 7'b0000000 && rs2 == 5'b00010 && rs1 == 5'b00001 &&
+			funct3 == 3'b101 && rd == 5'b00000 && opcode == 7'b0110011 &&
+			itype == 3'b000 && instr == 4'b1001) begin
+			$error("srl: Test 8 Passed");
+		end
+		
+		//slt $t0, $t1, $t2
+		in <= {7'b0000000, 5'b00010, 5'b00001, 3'b010, 5'b00000, 7'b0110011};
+		#10
+		if (funct7 == 7'b0000000 && rs2 == 5'b00010 && rs1 == 5'b00001 &&
+			funct3 == 3'b010 && rd == 5'b00000 && opcode == 7'b0110011 &&
+			itype == 3'b000 && instr == 4'b1010) begin
+			$error("slt: Test 9 Passed");
+		end
+		
+		//sltu $t0, $t1, $t2
+		in <= {7'b0000000, 5'b00010, 5'b00001, 3'b011, 5'b00000, 7'b0110011};
+		#10
+		if (funct7 == 7'b0000000 && rs2 == 5'b00010 && rs1 == 5'b00001 &&
+			funct3 == 3'b011 && rd == 5'b00000 && opcode == 7'b0110011 &&
+			itype == 3'b000 && instr == 4'b1100) begin
+			$error("sltu: Test 10 Passed");
+		end
+		
+		//mul $t0, $t1, $t2
+		in <= {7'b0000001, 5'b00010, 5'b00001, 3'b000, 5'b00000, 7'b0110011};
+		#10
+		if (funct7 == 7'b0000001 && rs2 == 5'b00010 && rs1 == 5'b00001 &&
+			funct3 == 3'b000 && rd == 5'b00000 && opcode == 7'b0110011 &&
+			itype == 3'b000 && instr == 4'b0101) begin
+			$error("mul: Test 11 Passed");
+		end
+		
+		//mulh $t0, $t1, $t2
+		in <= {7'b0000001, 5'b00010, 5'b00001, 3'b001, 5'b00000, 7'b0110011};
+		#10
+		if (funct7 == 7'b0000001 && rs2 == 5'b00010 && rs1 == 5'b00001 &&
+			funct3 == 3'b001 && rd == 5'b00000 && opcode == 7'b0110011 &&
+			itype == 3'b000 && instr == 4'b0110) begin
+			$error("mulh: Test 12 Passed");
+		end
+		
+		//mulhu $t0, $t1, $t2
+		in <= {7'b0000001, 5'b00010, 5'b00001, 3'b011, 5'b00000, 7'b0110011};
+		#10
+		if (funct7 == 7'b0000001 && rs2 == 5'b00010 && rs1 == 5'b00001 &&
+			funct3 == 3'b011 && rd == 5'b00000 && opcode == 7'b0110011 &&
+			itype == 3'b000 && instr == 4'b0111) begin
+			$error("mulhu: Test 13 Passed");
+		end
+		
+		//csrrw $t0, csr, $t1
+		in <= {12'b111100001111, 5'b00001, 3'b001, 5'b00000, 7'b1110011};
+		#10
+		if (csr == 12'b111100001111 && rs1 == 5'b00001 &&
+			funct3 == 3'b001 && rd == 5'b00000 && opcode == 7'b1110011 &&
+			itype == 3'b000 && instr == 4'b1101) begin
+			$error("csrrw: Test 14 Passed");
+		end
+		
+		//I-types
+		//addi $t0, $t1, immediate
+		in <= {12'b111100001111, 5'b00001, 3'b000, 5'b00000, 7'b0010011};
+		#10
+		if (immi == 12'b111100001111 && rs1 == 5'b00001 &&
+			funct3 == 3'b000 && rd == 5'b00000 && opcode == 7'b0010011 &&
+			itype == 3'b001 && instr == 4'b0011) begin
+			$error("addi: Test 15 Passed");
+		end
+		
+		//andi $t0, $t1, immediate
+		in <= {12'b111100001111, 5'b00001, 3'b111, 5'b00000, 7'b0010011};
+		#10
+		if (immi == 12'b111100001111 && rs1 == 5'b00001 &&
+			funct3 == 3'b111 && rd == 5'b00000 && opcode == 7'b0010011 &&
+			itype == 3'b001 && instr == 4'b0000) begin
+			$error("andi: Test 16 Passed");
+		end
+		
+		//ori $t0, $t1, immediate
+		in <= {12'b111100001111, 5'b00001, 3'b110, 5'b00000, 7'b0010011};
+		#10
+		if (immi == 12'b111100001111 && rs1 == 5'b00001 &&
+			funct3 == 3'b110 && rd == 5'b00000 && opcode == 7'b0010011 &&
+			itype == 3'b001 && instr == 4'b0001) begin
+			$error("ori: Test 17 Passed");
+		end
+		
+		//xori $t0, $t1, immediate
+		in <= {12'b111100001111, 5'b00001, 3'b100, 5'b00000, 7'b0010011};
+		#10
+		if (immi == 12'b111100001111 && rs1 == 5'b00001 &&
+			funct3 == 3'b100 && rd == 5'b00000 && opcode == 7'b0010011 &&
+			itype == 3'b001 && instr == 4'b0010) begin
+			$error("xori: Test 18 Passed");
+		end
+		
+		//slli $t0, $t1, immediate
+		in <= {7'b0000000, 5'b00001, 5'b00001, 3'b001, 5'b00000, 7'b0010011};
+		#10
+		if (funct7 == 7'b0000000 && shamt == 5'b00001 && rs1 == 5'b00001 &&
+			funct3 == 3'b001 && rd == 5'b00000 && opcode == 7'b0010011 &&
+			itype == 3'b001 && instr == 4'b1000) begin
+			$error("slli: Test 19 Passed");
+		end
+		
+		//srai $t0, $t1, immediate
+		in <= {7'b0100000, 5'b00001, 5'b00001, 3'b101, 5'b00000, 7'b0010011};
+		#10
+		if (funct7 == 7'b0100000 && shamt == 5'b00001 && rs1 == 5'b00001 &&
+			funct3 == 3'b101 && rd == 5'b00000 && opcode == 7'b0010011 &&
+			itype == 3'b001 && instr == 4'b1100) begin
+			$error("srai: Test 20 Passed");
+		end
+		
+		//srli $t0, $t1, immediate
+		in <= {7'b0000000, 5'b00001, 5'b00001, 3'b101, 5'b00000, 7'b0010011};
+		#10
+		if (funct7 == 7'b0000000 && shamt == 5'b00001 && rs1 == 5'b00001 &&
+			funct3 == 3'b101 && rd == 5'b00000 && opcode == 7'b0010011 &&
+			itype == 3'b001 && instr == 4'b1001) begin
+			$error("srli: Test 21 Passed");
+		end
+		
+		//U-types
+		//lui $t0, immediate
+		in <= {20'b00001111000011110000, 5'b00000, 7'b0110111};
+		#10
+		if (immu == 20'b00001111000011110000 && rd == 5'b00000 &&
+			opcode == 7'b0110111 && itype == 3'b010 && instr == 4'b0000) begin
+			$error("lui: Test 22 Passed");
 		end
 	end
 endmodule
