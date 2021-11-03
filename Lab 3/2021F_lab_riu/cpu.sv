@@ -20,7 +20,7 @@ module cpu (input logic [0:0] clk,
 	logic [31:0] writedata_WB, gpio_in_WB, inst_WB;
 
 	initial
-		$readmemh ("hexcode.txt", instruction_mem);
+		$readmemh ("instmem.dat", instruction_mem);
 
 	always_ff @ (posedge clk)
 		if (rst) begin

@@ -9,13 +9,8 @@ module simtop;
 	logic [17:0] SW;
 	logic clk;
 	logic [6:0] HEX0,HEX1,HEX2,HEX3,HEX4,HEX5,HEX6,HEX7;
-	logic [31:0] in;
-	logic [6:0] opcode, funct7;
-	logic [4:0] rs2, rs1, rd, shamt;
-	logic [2:0] funct3, itype;
-	logic [20:0] immu;
-	logic [11:0] immi, csr;
-	logic [3:0] instr;
+	logic [3:0] rst;
+	logic [31:0] gpio_in, gpio_out;
 
 	top dut
 	(
@@ -29,7 +24,7 @@ module simtop;
 		.LEDR(),
 
 		//////////// KEY //////////
-		.KEY(),
+		.KEY(rst),
 
 		//////////// SW //////////
 		.SW(SW),
@@ -44,19 +39,8 @@ module simtop;
 		.HEX6(HEX6),
 		.HEX7(HEX7),
 		
-		.in(in),
-		.opcode(opcode),
-		.funct7(funct7),
-		.rs2(rs2),
-		.rs1(rs1),
-		.rd(rd),
-		.shamt(shamt),
-		.funct3(funct3),
-		.itype(itype),
-		.immu(immu),
-		.immi(immi),
-		.csr(csr),
-		.instr(instr)
+		.gpio_in(gpio_in),
+		.gpio_out(gpio_out)
 	);
 
 	//self checking testbench
