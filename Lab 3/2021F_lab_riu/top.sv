@@ -32,7 +32,7 @@ module top (
 );
 	wire [31:0] gpio_out;
 
-	cpu cpuM(.clk(CLOCK_50), .rst(1'b0), .gpio_in(SW), .gpio_out(gpio_out));
+	cpu cpuM(.clk(CLOCK_50), .rst(KEY[0]), .gpio_in(SW), .gpio_out(gpio_out));
 	//assigns switches to display & sends to hexdriver
 	hexdriver hex0(.val(gpio_out[3:0]), .HEX(HEX0));
 	hexdriver hex1(.val(gpio_out[7:4]), .HEX(HEX1));
