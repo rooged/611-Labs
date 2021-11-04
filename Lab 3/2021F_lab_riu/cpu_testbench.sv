@@ -14,14 +14,15 @@ module cpu_testbench;
 	
 	initial begin
 		//00c00093: addi x1, x0, 12
-		//gpio_in <= 0000 0000 1100 0000 0000 0000 1001 0011;
-		rst <= 1;
-		#1
-		rst <= 0;
-		#1
+		gpio_in <= 32'b00000000110000000000000010010011;
+		//SW <= 18'b 00 0000 0000 0000 0000;
 		clk <= 0;
 		#1
 		clk <= 1;
+		#1
+		rst <= 1;
+		#1
+		rst <= 0;
 		#7
 		if (gpio_in == 32'b00000000110000000000000010010011) begin
 			$error("addi: Test 1 Passed");
