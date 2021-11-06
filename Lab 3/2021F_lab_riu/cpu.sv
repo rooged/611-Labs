@@ -21,7 +21,7 @@ module cpu (input logic [0:0] clk,
 	logic [31:0] writedata_WB, gpio_in_WB, inst_WB;
 
 	initial begin
-		$readmemh ("C:/Users/roo_g/OneDrive/Documents/School/Advanced Digital Design/611-Labs/Lab 3/2021F_lab_riu/instmem.dat", instruction_mem);
+		$readmemh ("instmem.dat", instruction_mem);
 	end
 
 	always_ff @ (posedge clk) begin
