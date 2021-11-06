@@ -25,7 +25,7 @@ module instr_decode (input logic [31:0] in, //input
 
 	always_comb begin
 		itype <= 3'b000;
-		instr <= 4'b0000; 
+		instr <= 4'b0000;
 		//r-types: add, sub, and, or, xor, sll, sra, srl, slt, sltu, mul, mulh, mulhu, csrrw
 		if (opcode == 7'b0110011 | opcode == 7'b1110011) begin
 			itype <= 3'b000;
