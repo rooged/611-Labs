@@ -10,7 +10,6 @@ module simtop;
 	logic clk;
 	logic [6:0] HEX0,HEX1,HEX2,HEX3,HEX4,HEX5,HEX6,HEX7;
 	logic [3:0] rst;
-	logic [31:0] gpio_in, gpio_out;
 
 	top dut
 	(
@@ -37,10 +36,7 @@ module simtop;
 		.HEX4(HEX4),
 		.HEX5(HEX5),
 		.HEX6(HEX6),
-		.HEX7(HEX7),
-		
-		.gpio_in(gpio_in),
-		.gpio_out(gpio_out)
+		.HEX7(HEX7)
 	);
 
 	//self checking testbench
