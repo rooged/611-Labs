@@ -6,12 +6,12 @@ module cpu (input logic [0:0] clk,
 	logic [31:0] instruction_EX;
 	logic [31:0] readdata1_EX, readdata2_EX, R_EX;
 	logic [11:0] PC_FETCH;
-	wire [6:0] opcode_EX, funct7_EX;
+	logic [6:0] opcode_EX, funct7_EX;
 	logic [4:0] rs1_EX, rs2_EX, rd_EX, shamt_EX;
-	wire [2:0] funct3_EX, itype_EX;
+	logic [2:0] funct3_EX, itype_EX;
 	logic [20:0] immu_EX;
 	logic [11:0] immi_EX, csr_EX;
-	wire [3:0] instr_EX, aluop_EX;
+	logic [3:0] instr_EX, aluop_EX;
 	logic [0:0] alusrc_EX, regwrite_EX, gpio_we_EX;
 	logic [1:0] regsel_EX;
 	logic [4:0] rd_WB;
