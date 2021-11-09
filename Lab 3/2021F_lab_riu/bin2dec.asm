@@ -1,4 +1,4 @@
-csrrw t2, 0xf00, x1
+csrrw t2, 0xf00, zero
 
 lui t1, 104857
 addi t1, t1, 2047 # 0.1 in 32,32 constant
@@ -70,7 +70,7 @@ mulhu s1, a1, t6 # 0 x 10 = 0
 slli s1, s1, 28
 or s2, s1, s2
 
-csrrw x2, 0xf02, s2
+csrrw s1, 0xf02, s2
 
 
 
