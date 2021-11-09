@@ -1,19 +1,19 @@
 module cpu (input logic [0:0] clk,
-		input logic [0:0] rst,
-		input logic [31:0] gpio_in,
-		output logic [31:0] gpio_out);
+	input logic [0:0] rst,
+	input logic [31:0] gpio_in,
+	output logic [31:0] gpio_out);
 	logic [31:0] instruction_mem [4095:0];
 	logic [31:0] instruction_EX;
-	wire [31:0] readdata1_EX, readdata2_EX, R_EX;
+	logic [31:0] readdata1_EX, readdata2_EX, R_EX;
 	logic [11:0] PC_FETCH;
 	wire [6:0] opcode_EX, funct7_EX;
-	wire [4:0] rs1_EX, rs2_EX, rd_EX, shamt_EX;
+	logic [4:0] rs1_EX, rs2_EX, rd_EX, shamt_EX;
 	wire [2:0] funct3_EX, itype_EX;
-	wire [20:0] immu_EX;
-	wire [11:0] immi_EX, csr_EX;
+	logic [20:0] immu_EX;
+	logic [11:0] immi_EX, csr_EX;
 	wire [3:0] instr_EX, aluop_EX;
-	wire [0:0] alusrc_EX, regwrite_EX, gpio_we_EX;
-	wire [1:0] regsel_EX;
+	logic [0:0] alusrc_EX, regwrite_EX, gpio_we_EX;
+	logic [1:0] regsel_EX;
 	logic [4:0] rd_WB;
 	logic [31:0] A_EX, B_EX, R_WB;
 	logic [0:0] regwrite_WB;
@@ -37,7 +37,7 @@ module cpu (input logic [0:0] clk,
 
 		//alusrc_EX mux
 		if (alusrc_EX) begin
-			B_EX <= {{20{instruction_EX[31]}}, immi_EX};
+			B_EX <= {{11{immi_EX[31]}}, immi_EX};
 		end else begin
 			B_EX <= readdata2_EX;
 		end
@@ -49,7 +49,7 @@ module cpu (input logic [0:0] clk,
 		regwrite_WB <= regwrite_EX; //regwrite_EX -> we
 		regsel_WB <= regsel_EX; //regsel_EX -> mux
 		gpio_in_WB <= gpio_in; //gpio_in -> mux
-		inst_WB <= {instruction_EX[31:12], 12'b0}; //instruction_EX[31:12], 12'b0 -> mux
+		inst_WB <= {immu_EX, 12'b0}; //instruction_EX[31:12], 12'b0 -> mux
 		R_WB <= R_EX; //R_EX -> R_WB
 
 		if (regsel_WB == 2'b00) begin //final 3 part mux
