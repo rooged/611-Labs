@@ -37,7 +37,7 @@ module cpu (input logic [0:0] clk,
 
 		//alusrc_EX mux
 		if (alusrc_EX) begin
-			B_EX <= {{20{immi_EX[11]}}, immi_EX};
+			B_EX <= {{20{instruction_EX[31]}}, instruction_EX[31:20]};
 		end else begin
 			B_EX <= readdata2_EX;
 		end
@@ -49,7 +49,7 @@ module cpu (input logic [0:0] clk,
 		regwrite_WB <= regwrite_EX; //regwrite_EX -> we
 		regsel_WB <= regsel_EX; //regsel_EX -> mux
 		gpio_in_WB <= gpio_in; //gpio_in -> mux
-		inst_WB <= {immu_EX, 12'b0}; //instruction_EX[31:12], 12'b0 -> mux
+		inst_WB <= {instruction_EX[31:12], 12'b0}; //instruction_EX[31:12], 12'b0 -> mux
 		R_WB <= R_EX; //R_EX -> R_WB
 
 		if (regsel_WB == 2'b00) begin //final 3 part mux
