@@ -37,7 +37,7 @@ module cpu (input logic [0:0] clk,
 
 		//alusrc_EX mux
 		if (alusrc_EX) begin
-			B_EX <= {{20{instruction_EX[31]}}, instruction_EX[31:20]};
+			B_EX <= {{20{instruction_EX[31]}}, immi_EX};
 		end else begin
 			B_EX <= readdata2_EX;
 		end
@@ -70,8 +70,8 @@ module cpu (input logic [0:0] clk,
 		.rs1(rs1_EX), .funct3(funct3_EX), .rd(rd_EX), .immu(immu_EX), .immi(immi_EX),
 		.csr(csr_EX), .shamt(shamt_EX), .itype(itype_EX), .instr(instr_EX));
 
-	regfile regf(.clk(clk), .rst(rst), .we(regwrite_WB), .readaddr1(instruction_EX[19:15]),
-		.readaddr2(instruction_EX[24:20]), .writeaddr(rd_WB), .writedata(writedata_WB),
+	regfile regf(.clk(clk), .rst(rst), .we(regwrite_WB), .readaddr1(rs1_EX),
+		     .readaddr2(rs2_EX), .writeaddr(rd_WB), .writedata(writedata_WB),
 		.readdata1(readdata1_EX), .readdata2(readdata2_EX));
 	
 endmodule
