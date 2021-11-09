@@ -37,7 +37,7 @@ module cpu (input logic [0:0] clk,
 
 		//alusrc_EX mux
 		if (alusrc_EX) begin
-			B_EX <= {{11{immi_EX[31]}}, immi_EX};
+			B_EX <= {{20{immi_EX[11]}}, immi_EX};
 		end else begin
 			B_EX <= readdata2_EX;
 		end
