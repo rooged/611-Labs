@@ -4,7 +4,7 @@ lui t1, 104857
 addi t1, t1, 2047 # 0.1 in 32,32 constant
 addi t1, t1, 411
 
-addi t2, zero, 1854 # 32,0 FP dummy variable 1468
+#addi t2, zero, 1854 # 32,0 FP dummy variable 1468
 addi t6, zero, 10 # constant 10
 
 
