@@ -1,3 +1,4 @@
+//written by Timothy Gedney & Caitlynn Jones
 module cpu (input logic [0:0] clk,
 	input logic [0:0] rst,
 	input logic [31:0] gpio_in,
@@ -32,32 +33,34 @@ module cpu (input logic [0:0] clk,
 			instruction_EX <= instruction_mem[PC_FETCH];
 			PC_FETCH <= PC_FETCH + 12'b1;
 		end
-		
-		rd_WB <= rd_EX; //instruction_EX 11:7 -> writeaddr
-
-		//alusrc_EX mux
-		if (alusrc_EX) begin
-			B_EX <= {{20{instruction_EX[31]}}, instruction_EX[31:20]};
-		end else begin
-			B_EX <= readdata2_EX;
-		end
 
 		if (gpio_we_EX) begin //gpio register mux
 			gpio_out <= readdata1_EX;
 		end
-
+		
+		rd_WB <= rd_EX; //instruction_EX 11:7 -> writeaddr
 		regwrite_WB <= regwrite_EX; //regwrite_EX -> we
 		regsel_WB <= regsel_EX; //regsel_EX -> mux
 		gpio_in_WB <= gpio_in; //gpio_in -> mux
 		inst_WB <= {instruction_EX[31:12], 12'b0}; //instruction_EX[31:12], 12'b0 -> mux
 		R_WB <= R_EX; //R_EX -> R_WB
+	end
+
+	always_comb begin
+		if (alusrc_EX) begin //alusrc_EX mux
+			B_EX = {{20{instruction_EX[31]}}, instruction_EX[31:20]};
+		end else begin
+			B_EX = readdata2_EX;
+		end
 
 		if (regsel_WB == 2'b00) begin //final 3 part mux
-			writedata_WB <= gpio_in_WB;
+			writedata_WB = gpio_in_WB;
 		end else if (regsel_WB == 2'b01) begin
-			writedata_WB <= inst_WB;
+			writedata_WB = inst_WB;
 		end else if (regsel_WB == 2'b10) begin
-			writedata_WB <= R_WB;
+			writedata_WB = R_WB;
+		end else begin
+			writedata_WB = gpio_in_WB;
 		end
 	end
 
