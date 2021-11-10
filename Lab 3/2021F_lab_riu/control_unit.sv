@@ -1,3 +1,4 @@
+//written by Timothy Gedney & Caitlynn Jones
 module control_unit (input logic [2:0] itype, //instruction type (r, i, u)
 		     input logic [3:0] instr, //instruction
 			 output logic [0:0] alusrc,
@@ -18,10 +19,10 @@ module control_unit (input logic [2:0] itype, //instruction type (r, i, u)
 			if (instr == 4'b1101) begin //csrrw
 				aluop <= 4'bxxxx;
 				alusrc <= 1'bx;
-				regsel <= 2'bxx;
-				regwrite <= 1'b0;
+				regsel <= 2'b00;
+				regwrite <= 1'b1;
 				gpio_we <= 1'b1;
-			end else begin
+			end else begin //everything else
 				aluop <= instr;
 				alusrc <= 1'b0;
 				regsel <= 2'b10;
