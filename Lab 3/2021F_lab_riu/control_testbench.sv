@@ -23,17 +23,17 @@ module control_testbench;
 		//add, sub, and, or, xor, sll, sra, srl, slt, sltu, mul, mulh, mulhu
 		instr <= 4'b0011;
 		#10
-		if (alusrc == 1'b0 && regwrite == 1'b1 && regsel == 2'b10 &&
-			aluop == 4'b0011 && gpio_we == 1'b0) begin
-			$error("R-types: Test 1 Passed");
+		if (alusrc != 1'b0 && regwrite != 1'b1 && regsel != 2'b10 &&
+			aluop != 4'b0011 && gpio_we != 1'b0) begin
+			$error("R-types: Test 1 Failed");
 		end
 		
 		//csrrw
 		instr <= 4'b1101;
 		#10
 		//dont check for alursrc, regsel, aluop because theyre dont cares
-		if (regwrite == 1'b0 && gpio_we == 1'b1) begin
-			$error("R-type csrrw: Test 2 Passed");
+		if (regwrite != 1'b0 && gpio_we != 1'b1) begin
+			$error("R-type csrrw: Test 2 Failed");
 		end
 		
 		//I-types
@@ -42,9 +42,9 @@ module control_testbench;
 		//addi, andi, ori, xori, slli, srai, srli
 		instr <= 4'b0011;
 		#10
-		if (alusrc == 1'b1 && regwrite == 1'b1 && regsel == 2'b10 &&
-			aluop == 4'b0011 && gpio_we == 1'b0) begin
-			$error("I-types: Test 3 Passed");
+		if (alusrc != 1'b1 && regwrite != 1'b1 && regsel != 2'b10 &&
+			aluop != 4'b0011 && gpio_we != 1'b0) begin
+			$error("I-types: Test 3 Failed");
 		end
 		
 		//U-types
@@ -54,9 +54,9 @@ module control_testbench;
 		instr <= 4'b0000;
 		#10
 		//dont check for alusrc because its dont care
-		if (regwrite == 1'b1 && regsel == 2'b01 && aluop == 4'b0000 &&
-			gpio_we == 1'b0) begin
-			$error("U-Types: Test 4 Passed");
+		if (regwrite != 1'b1 && regsel != 2'b01 && aluop != 4'b0000 &&
+			gpio_we != 1'b0) begin
+			$error("U-Types: Test 4 Failed");
 		end
 	end
 endmodule
