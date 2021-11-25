@@ -5,8 +5,9 @@ module instr_testbench;
 	wire [4:0] rs2, rs1, rd, shamt;
 	wire [2:0] funct3, itype;
 	wire [20:0] immu;
-	wire [11:0] immi, csr;
+	wire [11:0] immi, csr, immb;
 	wire [3:0] instr;
+	wire [19:0] immj;
 	
 	instr_decode uut (
 		.in(in),
@@ -20,12 +21,80 @@ module instr_testbench;
 		.itype(itype),
 		.immu(immu),
 		.immi(immi),
+		.immb(immb),
+		.immj(immj),
 		.csr(csr),
 		.instr(instr)
 	);
 	
 	initial begin
-		//R-types
+		//I-types
+		//jalr $t0, offset
+		in <= {12'b111100001111, 5'b00001, 3'b000, 5'b00000, 7'b1100111};
+		#10
+		if (immi != 12'b111100001111 && rs1 != 5'b00001 &&
+			funct3 != 3'b000 && rd != 5'b00000 && opcode != 7'b1100111 &&
+			itype != 3'b001 && instr != 4'b1011) begin
+			$error("jalr: Test 1 Failed");
+		end
+		
+		//B-types
+		//beq $t0, $t1, offset
+		in <= {1'b0, 6'b001111, 5'b00001, 5'b00000, 3'b000, 4'b0000, 1'b0, 7'b1100011};
+		#10
+		if (immb != 12'b000011110000 && rs2 != 5'b00001 && rs1 != 5'b00000 &&
+			funct3 != 3'b000 && opcode != 7'b1100011 && itype != 3'b011 &&
+			instr != 4'b0100) begin
+			$error("beq: Test 2 Failed");
+		end
+		
+		//bge $t0, $t1, offset
+		in <= {1'b0, 6'b001111, 5'b00001, 5'b00000, 3'b101, 4'b0000, 1'b0, 7'b1100011};
+		#10
+		if (immb != 12'b000011110000 && rs2 != 5'b00001 && rs1 != 5'b00000 &&
+			funct3 != 3'b101 && opcode != 7'b1100011 && itype != 3'b011 &&
+			instr != 4'b1010) begin
+			$error("bge: Test 3 Failed");
+		end
+		
+		//bgeu $t0, $t1, offset
+		in <= {1'b0, 6'b001111, 5'b00001, 5'b00000, 3'b111, 4'b0000, 1'b0, 7'b1100011};
+		#10
+		if (immb != 12'b000011110000 && rs2 != 5'b00001 && rs1 != 5'b00000 &&
+			funct3 != 3'b111 && opcode != 7'b1100011 && itype != 3'b011 &&
+			instr != 4'b1100) begin
+			$error("bgeu: Test 3 Failed");
+		end
+		
+		//blt $t0, $t1, offset
+		in <= {1'b0, 6'b001111, 5'b00001, 5'b00000, 3'b100, 4'b0000, 1'b0, 7'b1100011};
+		#10
+		if (immb != 12'b000011110000 && rs2 != 5'b00001 && rs1 != 5'b00000 &&
+			funct3 != 3'b100 && opcode != 7'b1100011 && itype != 3'b011 &&
+			instr != 4'b1010) begin
+			$error("blt: Test 4 Failed");
+		end
+		
+		//bltu $t0, $t1, offset
+		in <= {1'b0, 6'b001111, 5'b00001, 5'b00000, 3'b110, 4'b0000, 1'b0, 7'b1100011};
+		#10
+		if (immb != 12'b000011110000 && rs2 != 5'b00001 && rs1 != 5'b00000 &&
+			funct3 != 3'b110 && opcode != 7'b1100011 && itype != 3'b011 &&
+			instr != 4'b1100) begin
+			$error("bltu: Test 5 Failed");
+		end
+
+		//J-types
+		//jal $t0, offset
+		in <= {1'b0, 10'b0011110000, 1'b0, 8'b00011110, 5'b00000, 7'b1101111};
+		#10
+		if (immi != 20'b00001111000011110000 && funct3 != 3'b000 && rd != 5'b00000 &&
+			opcode != 7'b1101111 && itype != 3'b100 && instr != 4'b0011) begin
+			$error("jal: Test 6 Failed");
+		end
+
+		//Project 3 tests
+		/*//R-types
 		//add $t0, $t1, $t2
 		in <= {7'b0000000, 5'b00010, 5'b00001, 3'b000, 5'b00000, 7'b0110011};
 		#10
@@ -223,6 +292,6 @@ module instr_testbench;
 		if (immu != 20'b00001111000011110000 && rd != 5'b00000 &&
 			opcode != 7'b0110111 && itype != 3'b010 && instr != 4'b0000) begin
 			$error("lui: Test 22 Failed");
-		end
+		end*/
 	end
 endmodule

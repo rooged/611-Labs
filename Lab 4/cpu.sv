@@ -11,7 +11,7 @@ module cpu (input logic [0:0] clk,
 	logic [4:0] rs1_EX, rs2_EX, rd_EX, shamt_EX;
 	logic [2:0] funct3_EX, itype_EX;
 	logic [20:0] immu_EX;
-	logic [11:0] immi_EX, csr_EX;
+	logic [11:0] immi_EX, csr_EX, immb_EX;
 	logic [3:0] instr_EX, aluop_EX;
 	logic [0:0] alusrc_EX, regwrite_EX, gpio_we_EX;
 	logic [1:0] regsel_EX;
@@ -71,7 +71,7 @@ module cpu (input logic [0:0] clk,
 
 	instr_decode instd(.in(instruction_EX), .opcode(opcode_EX), .funct7(funct7_EX), .rs2(rs2_EX),
 		.rs1(rs1_EX), .funct3(funct3_EX), .rd(rd_EX), .immu(immu_EX), .immi(immi_EX),
-		.csr(csr_EX), .shamt(shamt_EX), .itype(itype_EX), .instr(instr_EX));
+		.immb(immb_EX), .csr(csr_EX), .shamt(shamt_EX), .itype(itype_EX), .instr(instr_EX));
 
 	regfile regf(.clk(clk), .rst(rst), .we(regwrite_WB), .readaddr1(rs1_EX),
 		     .readaddr2(rs2_EX), .writeaddr(rd_WB), .writedata(writedata_WB),
