@@ -73,6 +73,6 @@ module instr_decode (input logic [31:0] in, //input
 		end else if (opcode === 7'b1101111) begin
 			itype <= 3'b100;
 			instr <= 4'b0011; //jal = add alu op
-		end*/
+		end
 	end
 endmodule
